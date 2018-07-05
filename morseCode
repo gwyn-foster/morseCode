@@ -1,0 +1,95 @@
+const int switchPin = 2; //input pin
+
+const int inputPin = 5; //grey
+const int endPin = 6; //red
+const int spacePin = 7; //blue
+const int startPin = 8; //green
+int overflowCounter = 0; //Overflow of TNCT1
+
+long startTime;
+long duration;
+float secDuration;
+int count=0;
+bool LightOn = false;
+bool ToneOn = false;
+int digitCount=0;
+
+//const char dot ".";
+//const char dash "-";
+
+
+void setup() {
+
+  pinMode(switchPin, INPUT_PULLUP);
+  pinMode(inputPin, INPUT);
+  pinMode(endPin, INPUT);
+  pinMode(spacePin, INPUT);
+  pinMode(startPin, INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(9600); //sets up communications with serial monitor
+  attachInterrupt(0, trigger, HIGH); // interrupt 0 is mapped to pin2 on the Arduino Uno
+
+  TIMSK1 = 0x6;
+  OCR1A = 255;
+
+}
+
+void loop() {
+  if(digitalRead(5)==HIGH){
+  	//letter sensing shit here
+  }
+  else if(digitalRead(6)==HIGH){
+  	//end a word here
+    outsize=out.length();
+    for (i=0; i<outsize; i++){
+      serial.print(out[i]);
+    }
+    out=[];
+  }
+  else if(digitalRead(7)==HIGH){
+  	//space
+
+  }
+  else if(digitalRead(8)==HIGH){
+    //start a word here
+  }
+}
+
+void startWord(){
+  startLetter();
+}
+void startLetter(){
+  out = [];
+  if(digitalRead(2)==HIGH){
+    startTime = millis();
+  }
+
+  while (digitalRead(2)==HIGH){
+  }
+  stop=millis();
+  digitCount++;
+  duration = stop-startTime;
+  switch(duration){
+    case <750:
+      out[digitCount-1]=".";
+    case >= 750:
+      out[digitCount-1]="-";
+  }
+
+
+}
+void endWord(){
+  count=0;
+
+}
+void trigger(){
+  //Serial.println(TCNT1);
+  LightOn = true;
+  ToneON = !ToneOn;
+  count++;
+}
+
+
+ISR(TCNT1_COMPA_vect){
+  overflowCounter ++;
+}
