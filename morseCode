@@ -6,7 +6,7 @@ const int endPin = 6; //red stop word
 const int spacePin = 7; //blue spaces inbetween words
 const int startPin = 8; //green start a word
 int overflowCounter = 0; //Overflow of TNCT1
-
+//long stop;
 long startTime;
 long duration;
 float secDuration;
@@ -15,34 +15,35 @@ bool LightOn = false;
 bool ToneOn = false;
 int digitCount=0;
 int lastDigit=0;
-out=[];
-char letters[26][5]={
-  {".","-","*","*","A"},
-  {"-",".",".",".","B"},
-  {"-","".,"-",".","C"},
-  {"-",".",".","*","D"},
-  {".","*","*","*","E"},
-  {".",".","-",".","F"},
-  {"-","-",".","*","G"},
-  {".",".",".",".","H"},
-  {".",".","*","*","I"},
-  {".","-","-","-","J"},
-  {"-",".","-","*","K"},
-  {".","-",".",".","L"},
-  {"-","-","*","*","M"},
-  {"-",".","*","*","N"},
-  {"-","-","-","*","O"},
-  {".","-","-",".","P"},
-  {"-","-",".","-","Q"},
-  {".","-",".","*","R"},
-  {".",".",".","*","S"},
-  {"-","*","*","*","T"},
-  {".",".","-","*","U"},
-  {".",".",".","-","V"},
-  {".","-","-","*","W"},
-  {"-",".",".","-","X"},
-  {"-",".","-","-","Y"},
-  {"-","-",".",".","Z"},
+char out[4];
+char letters[27][5]={
+  {'.','-','*','*','A'},
+  {'-','.','.','.','B'},
+  {'-','.','-','.','C'},
+  {'-','.','.','*','D'},
+  {'.','*','*','*','E'},
+  {'.','.','-','.','F'},
+  {'-','-','.','*','G'},
+  {'.','.','.','.','H'},
+  {'.','.','*','*','I'},
+  {'.','-','-','-','J'},
+  {'-','.','-','*','K'},
+  {'.','-','.','.','L'},
+  {'-','-','*','*','M'},
+  {'-','.','*','*','N'},
+  {'-','-','-','*','O'},
+  {'.','-','-','.','P'},
+  {'-','-','.','-','Q'},
+  {'.','-','.','*','R'},
+  {'.','.','.','*','S'},
+  {'-','*','*','*','T'},
+  {'.','.','-','*','U'},
+  {'.','.','.','-','V'},
+  {'.','-','-','*','W'},
+  {'-','.','.','-','X'},
+  {'-','.','-','-','Y'},
+  {'-','-','.','.','Z'},
+  {'*','*','*','*',' '}
 };
 
 
@@ -55,13 +56,13 @@ char letters[26][5]={
 void setup() {
 
   pinMode(switchPin, INPUT_PULLUP);
- " pinMode(inputPin, INPUT);
+  pinMode(inputPin, INPUT);
   pinMode(endPin, INPUT);
   pinMode(spacePin, INPUT);
   pinMode(startPin, INPUT);
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(9600); //sets up communications with serial monitor
-  attachInterrupt(0, trigger, HIGH); // interrupt 0 is mapped to pin2 on the Arduino Uno
+  //attachInterrupt(0, trigger, HIGH); // interrupt 0 is mapped to pin2 on the Arduino Uno
 
   TIMSK1 = 0x6;
   OCR1A = 255;
@@ -70,57 +71,69 @@ void setup() {
 
 void loop() {
 
-  if(digitalRead(5)==HIGH){
+  if(digitalRead(inputPin)==HIGH){
     //letter sensing shit here
+    Serial.println("5");
+    delay(500);
 
-    if(digitalRead(2)==HIGH){
-      startTime = millis();
-    }
-    if(LightOn){
-      digitalWrite(LED, HIGH);
-    }
-    while (digitalRead(2)==HIGH){
-    }
-    //turn off tone
-    stop=millis();
-    digitalWrite(LED,LOW);
-    LightOn=false;
-    digitCount++;
-    duration = stop-startTime;
-    switch(duration){
-      case <750:
-        out[digitCount-1]=".";
-      case >= 750:
-        out[digitCount-1]="-";
-    }
+//    if(digitalRead(2)==HIGH){
+//      startTime = millis();
+//    }
+//    if(LightOn){
+//      digitalWrite(LED, HIGH);
+//    }
+//    while (digitalRead(2)==HIGH){
+//    }
+//    //turn off tone
+//    stop=millis();
+//    digitalWrite(LED,LOW);
+//    LightOn=false;
+//
+//
+//    duration = stop-startTime;
+//    if(duration <750){
+//      out[digitCount]='.';
+//    }
+//    else if(duration >=750){
+//       out[digitCount]='-';
+//    }
+//    digitCount++;
   }
-  else if(digitalRead(6)==HIGH){
+  else if(digitalRead(endPin)==HIGH){
     //end a word here
-    outsize=out.length();
-    for (i=0; i<4; i++){
-      if(out[i]=== null){
-        out[i]="*";
-      }
-    }
-    for (i=0; i<outsize; i++){
-      serial.print(out[i]);
-    }
-    out=[];
-    digitCount=0;
+    Serial.println("6");
+    delay(500);
+//    out[4]={};
+//    digitCount=0;
   }
-  else if(digitalRead(7)==HIGH){
+  else if(digitalRead(spacePin)==HIGH){
     //space
-    out[digitCount-1]=" ";
-    for(i==lastDigit; i< digitCount-1; i++){
-
-    }
-    lastDigit=digitCount-1;
-
-
+    Serial.println("7");
+    delay(500);
+//    for(int i=0; i< 4; i++){
+//      if(out[i]== NULL){
+//        out[i]='*';
+//      }
+//    }
+//    for(int i=0; i<26;i++){
+//      for(int j=0; j<4; j++){
+//        if (out[j]!=letters[i][j]){
+//          continue;
+//        }
+//        else if(j==3){
+//          Serial.print(letters[i][4]);
+//        }
+//      }
+//    }
+//    out[4]={};
+//    lastDigit=digitCount-1;
   }
-  else if(digitalRead(8)==HIGH){
+  else if(digitalRead(startPin)==HIGH){
     //start a word here
-    out=[];
+    Serial.println("8");
+    delay(500);
+//    out[4]={};
+
   }
 }
 
