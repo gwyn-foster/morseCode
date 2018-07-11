@@ -14,7 +14,39 @@ int count=0;
 bool LightOn = false;
 bool ToneOn = false;
 int digitCount=0;
+int lastDigit=0;
 out=[];
+char letters[26][5]={
+  {".","-","*","*","A"},
+  {"-",".",".",".","B"},
+  {"-","".,"-",".","C"},
+  {"-",".",".","*","D"},
+  {".","*","*","*","E"},
+  {".",".","-",".","F"},
+  {"-","-",".","*","G"},
+  {".",".",".",".","H"},
+  {".",".","*","*","I"},
+  {".","-","-","-","J"},
+  {"-",".","-","*","K"},
+  {".","-",".",".","L"},
+  {"-","-","*","*","M"},
+  {"-",".","*","*","N"},
+  {"-","-","-","*","O"},
+  {".","-","-",".","P"},
+  {"-","-",".","-","Q"},
+  {".","-",".","*","R"},
+  {".",".",".","*","S"},
+  {"-","*","*","*","T"},
+  {".",".","-","*","U"},
+  {".",".",".","-","V"},
+  {".","-","-","*","W"},
+  {"-",".",".","-","X"},
+  {"-",".","-","-","Y"},
+  {"-","-",".",".","Z"},
+};
+
+
+
 
 //const char dot ".";
 //const char dash "-";
@@ -23,7 +55,7 @@ out=[];
 void setup() {
 
   pinMode(switchPin, INPUT_PULLUP);
-  pinMode(inputPin, INPUT);
+ " pinMode(inputPin, INPUT);
   pinMode(endPin, INPUT);
   pinMode(spacePin, INPUT);
   pinMode(startPin, INPUT);
@@ -39,7 +71,7 @@ void setup() {
 void loop() {
 
   if(digitalRead(5)==HIGH){
-  	//letter sensing shit here
+    //letter sensing shit here
 
     if(digitalRead(2)==HIGH){
       startTime = millis();
@@ -49,6 +81,7 @@ void loop() {
     }
     while (digitalRead(2)==HIGH){
     }
+    //turn off tone
     stop=millis();
     digitalWrite(LED,LOW);
     LightOn=false;
@@ -62,8 +95,13 @@ void loop() {
     }
   }
   else if(digitalRead(6)==HIGH){
-  	//end a word here
+    //end a word here
     outsize=out.length();
+    for (i=0; i<4; i++){
+      if(out[i]=== null){
+        out[i]="*";
+      }
+    }
     for (i=0; i<outsize; i++){
       serial.print(out[i]);
     }
@@ -71,8 +109,14 @@ void loop() {
     digitCount=0;
   }
   else if(digitalRead(7)==HIGH){
-  	//space
+    //space
     out[digitCount-1]=" ";
+    for(i==lastDigit; i< digitCount-1; i++){
+
+    }
+    lastDigit=digitCount-1;
+
+
   }
   else if(digitalRead(8)==HIGH){
     //start a word here
@@ -84,11 +128,11 @@ void loop() {
 void trigger(){
   //Serial.println(TCNT1);
   LightOn = true;
-  ToneON = !ToneOn;
+  //turn on tone
   count++;
 }
 
 
 ISR(TCNT1_COMPA_vect){
-  overflowCounter ++;
+  overflowCounter++;
 }
