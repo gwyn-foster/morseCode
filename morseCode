@@ -149,3 +149,4 @@ void trigger(){
 ISR(TCNT1_COMPA_vect){
   overflowCounter++;
 }
+a
